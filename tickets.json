@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Hardware Refresh for Coca-Cola - 100 Nodes",
+    "description": "Customer Coca-Cola requires a hardware refresh for 100 nodes, which includes a mix of 1U and 2U servers, GPU workloads, and storage backup solutions.",
+    "requester_name": "Yardle Spardle",
+    "requester_email": "yspardle@lenovo.com",
+    "country": "Switzerland",
+    "topic": "Servers, Storage, GPUs",
+    "subtopic": "Hardware Refresh",
+    "opportunity_id": null,
+    "priority": "Low",
+    "customer_name": "Coca-Cola"
+  },
+  {
+    "title": "Server, Storage, and GPU refresh configuration for Coca-Cola (100+ systems)",
+    "description": "Customer Coca-Cola requires a hardware refresh for 100+ systems in Switzerland, spanning server, storage, and GPU infrastructure. Requirements include a mixed deployment of 1U servers, 2U servers, GPU-enabled workloads, and storage backup nodes.",
+    "requester_name": "Yardle Spardle",
+    "requester_email": "yspardle@lenovo.com",
+    "country": "Switzerland",
+    "topic": "Servers, Storage, GPU",
+    "subtopic": "Servers",
+    "opportunity_id": null,
+    "priority": "Low",
+    "customer_name": "Coca-Cola"
+  }
+]

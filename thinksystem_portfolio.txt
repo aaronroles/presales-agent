@@ -1,0 +1,21 @@
+ThinkSystem SR630 V3: 1U, 2-socket rack server powered by 4th or 5th Gen Intel Xeon Scalable processors. Uses DDR5 memory and PCIe Gen5, designed for high-density virtualization, cloud infrastructure, and general enterprise workloads where rack space is tight.
+
+ThinkSystem SR650 V3: 2U, 2-socket rack server powered by 4th or 5th Gen Intel Xeon Scalable processors. Offers expanded storage capacity, flexible I/O, and support for multiple GPUs, making it ideal for VDI, enterprise databases, and mid-size AI inference.
+
+ThinkSystem SR645 V3: 1U, 2-socket rack server powered by AMD EPYC 9004 Series processors. Built for high core-density virtualization, telco, and compute-heavy workloads that benefit from high PCIe lane counts in a compact 1U footprint.
+
+ThinkSystem SR665 V3: 2U, 2-socket rack server powered by AMD EPYC 9004 Series processors. Balances high core counts, large memory bandwidth, flexible NVMe storage, and multi-GPU support for analytics, HCI, and AI/ML workloads.
+
+ThinkSystem SR675 V3: 3U modular GPU server powered by AMD EPYC processors, supporting up to 8 GPUs (including air-cooled or Lenovo Neptune hybrid liquid-to-air cooling options). Purpose-built for AI model training, high-performance inference, and HPC.
+
+ThinkSystem ST650 V3: 4U tower (or rack-convertible) 2-socket server using 4th or 5th Gen Intel Xeon Scalable processors. Designed for remote offices, branch locations, retail, and SMB environments needing quiet operation and large local storage without a full data centre rack.
+
+ThinkSystem SE455 V3: Short-depth, ruggedized 2U edge server powered by AMD EPYC 8004 Series processors. Designed for harsh or space-constrained edge locations (manufacturing, retail, telco) running edge AI inference and local workloads outside traditional data centres.
+
+ThinkSystem SR630 V4: 1U, 2-socket next-generation rack server powered by Intel Xeon 6 processors (supporting high-density E-cores for cloud-native/scale-out workloads or P-cores for compute-intensive tasks). Delivers higher core density, DDR5 performance, and improved power efficiency over V3.
+
+ThinkSystem SR650 V4: 2U, 2-socket next-generation rack server powered by Intel Xeon 6 processors. Built for mainstream enterprise modernization, AI-ready infrastructure, software-defined storage, and heavy virtualization with upgraded PCIe Gen5 and Neptune cooling options.
+
+ThinkSystem SR650a V4: 2U, 2-socket AI-optimized rack server powered by Intel Xeon 6 processors with front-access GPU bays. Specifically engineered for enterprise AI inference, fine-tuning, and high-performance VDI without requiring a 3U or 4U chassis.
+
+VMware VVF and VCF Licensing Rule: VMware vSphere Foundation (VVF) and VMware Cloud Foundation (VCF) are licensed per physical CPU core with a minimum of 16 cores licensed per physical CPU. A 2-socket server with 8-core CPUs still requires 32 core licenses total.

@@ -1,0 +1,8 @@
+Servers
+Storage
+GPU
+HPC
+AI
+Networking
+Software
+Licenses
