@@ -1,324 +1,137 @@
-\# Enterprise Presales RAG \& Intake Agent
+# Lenovo LETS Presales RAG & Conversational Intake Agent
 
+An intelligent, multi-turn technical presales assistant featuring a **Streamlit Web UI**, **Retrieval-Augmented Generation (RAG)**, and an **agentic intake workflow** built with Python and the Google GenAI SDK.
 
+This project bridges traditional enterprise presales operations with modern applied AI—acting as a conversational alternative to rigid web request forms (such as Lenovo's *Ask LETS*).
 
-An intelligent, multi-turn technical presales assistant built with Python and the Google GenAI SDK. 
+---
 
+## Business Context & Motivation
 
+In high-volume enterprise hardware sales environments, technical presales teams receive thousands of unstructured requests annually. Common challenges include:
+- Incomplete sizing inputs submitted by users, requiring manual back-and-forth communication.
+- Repetitive lookups across complex hardware specs, configurations, and software licensing rules.
+- Manual re-entry of request parameters into enterprise CRM platforms (e.g., Microsoft Dynamics 365).
 
-This project bridges traditional enterprise presales operations with modern applied AI. It combines \*\*Retrieval-Augmented Generation (RAG)\*\* across enterprise data centre hardware documentation with an \*\*agentic intake workflow\*\* that extracts sizing parameters and triggers downstream CRM actions.
+This prototype addresses these challenges by acting as a front-line conversational agent that answers technical questions from grounded documentation, dynamically collects required CRM metadata, enforces business rules (e.g., missing Opportunity ID = Low priority), and provides a final review screen before dispatching structured JSON payloads.
 
+---
 
-
-\---
-
-
-
-\## Business Context \& Motivation
-
-
-
-In high-volume enterprise hardware sales environments (such as Lenovo ISG), technical presales teams receive thousands of unstructured requests annually from internal sales reps and channel partners. Common challenges include:
-
-\- Incomplete sizing inputs submitted by users, requiring manual back-and-forth communication.
-
-\- Repetitive lookups across complex hardware specs, configurations, and software licensing rules (e.g., VMware VCF core minimums).
-
-\- Manual re-entry of request parameters into enterprise CRM platforms (e.g., Microsoft Dynamics 365).
-
-
-
-This prototype addresses these challenges by acting as an intelligent front-line assistant that can simultaneously answer domain-specific technical questions from grounded documentation and guide users through structured intake.
-
-
-
-\---
-
-
-
-\## Architectural Workflow
-
-
+## Architectural Workflow
 
 ```text
-
-\[ User Query / Request ]
-
-&#x20;          │
-
-&#x20;          ▼
-
+[ User Query / Chat Input (Streamlit UI) ]
+                   │
+                   ▼
 ┌──────────────────────────────────────────────┐
-
 │        Local Knowledge Base (RAG)            │
-
-│  - Parses thinksystem\_portfolio.txt          │
-
-│  - Scores relevance via keyword indexing     │
-
+│  - Parses thinksystem_portfolio.txt          │
+│  - Parses approved topics_list.txt           │
 └──────────────────────┬───────────────────────┘
-
-&#x20;                      │ Top Matched Chunks
-
-&#x20;                      ▼
-
+                       │ Matched Facts & Context
+                       ▼
 ┌──────────────────────────────────────────────┐
-
 │           Gemini Agentic Runtime             │
-
-│  - System Prompt Governance                  │
-
-│  - Multi-Turn Conversation Memory            │
-
-│  - Grounded Technical Q\&A                    │
-
-│  - Slot-Filling (Urgency, Hosts, Cores/CPU)  │
-
+│  - System Prompt Governance & Tone Rules     │
+│  - Multi-Turn Conversation History           │
+│  - Silent Topic/Subtopic Mapping             │
+│  - Dynamic Slot-Filling (6 Required Fields)  │
 └──────────────────────┬───────────────────────┘
-
-&#x20;                      │ Validated Parameters
-
-&#x20;                      ▼
-
+                       │ Complete & Verified Data
+                       ▼
 ┌──────────────────────────────────────────────┐
-
-│          Structured JSON Output              │
-
-│  - Enforces schema: {urgency, hosts, cores}  │
-
+│             Review & Confirm State           │
+│  - Presents structured summary to user       │
+│  - Waits for explicit "yes" confirmation     │
 └──────────────────────┬───────────────────────┘
-
-&#x20;                      │
-
-&#x20;                      ▼
-
+                       │ User Confirmed ("yes")
+                       ▼
 ┌──────────────────────────────────────────────┐
-
 │          Backend Dispatch Action             │
-
-│  - Executes Python function create\_ticket()  │
-
+│  - Appends record to local `tickets.json`    │
 │  - Simulates Dynamics 365 / REST API handoff │
-
 └──────────────────────────────────────────────┘
-
 ```
 
+---
 
+## Key Capabilities
 
-\---
+1. **Conversational Front-End (Streamlit Web UI):**
+   - Provides a clean, browser-based chat interface (`app.py`) for interactive user testing and demonstrations.
+2. **Grounded Domain Knowledge (RAG):**
+   - Retrieves relevant hardware specifications across Lenovo ThinkSystem rack servers, edge platforms, GPU/AI workload servers, and licensing rules strictly from local text files.
+3. **Conversational Slot-Filling & State Retention:**
+   - Guides users naturally through 6 core intake items (Requester, Country, Topic, Opp ID, Customer Name, Tech Details) without robotic interrogation.
+4. **Smart Validation & Business Rules:**
+   - Automatically enforces business logic—such as restricting requests missing an Opportunity ID to `Low` priority.
+5. **Interactive Review & Confirm State:**
+   - Summarizes all collected details back to the user before submission, supporting intelligent typo corrections or additions before hitting the CRM.
+6. **Robust API Error Handling:**
+   - Includes automatic retry blocks for temporary server-side high demand (503 errors).
 
+---
 
+## Tech Stack
 
-\## Key Capabilities
+- **Language:** Python 3.10+
+- **Frontend / UI:** Streamlit
+- **LLM Engine:** Google Gemini (`models/gemini-3.5-flash-lite`)
+- **SDK:** `google-genai`
+- **Data Exchange:** JSON (`tickets.json`)
+- **Interface:** Web UI (`app.py`) & Command-Line Interface (`thinksystem_agent.py`)
 
+---
 
-
-1\. \*\*Grounded Domain Knowledge (RAG):\*\*
-
-&#x20;  - Retrieves relevant hardware specifications across Lenovo ThinkSystem rack servers (V3 and next-gen V4 platforms), edge platforms, GPU/AI workload servers, and VMware VCF core licensing rules.
-
-&#x20;  - Prevents hallucinations by instructing the model to rely strictly on retrieved reference chunks.
-
-
-
-2\. \*\*Conversational Slot-Filling \& State Retention:\*\*
-
-&#x20;  - Maintains conversation history across multi-turn exchanges.
-
-&#x20;  - Automatically detects missing criteria needed to size and log a presales ticket:
-
-&#x20;    - Request urgency
-
-&#x20;    - Number of host nodes
-
-&#x20;    - Cores per CPU
-
-&#x20;  - Converses naturally in plain English, asking only for the missing parameters.
-
-
-
-3\. \*\*Schema Enforcement \& Automated Action Handoff:\*\*
-
-&#x20;  - Once all criteria are met, the agent breaks the conversational loop and produces a structured JSON payload.
-
-&#x20;  - The Python runtime parses the JSON and executes a local function (`create\_ticket()`), simulating a production webhook or REST API payload delivery to systems like Microsoft Dynamics 365.
-
-
-
-\---
-
-
-
-\## Tech Stack
-
-
-
-\- \*\*Language:\*\* Python 3.10+
-
-\- \*\*LLM Engine:\*\* Google Gemini (`models/gemini-3.5-flash-lite`)
-
-\- \*\*SDK:\*\* `google-genai`
-
-\- \*\*Data Exchange:\*\* JSON
-
-\- \*\*Interface:\*\* Command-Line Interface (CLI / CMD)
-
-
-
-\---
-
-
-
-\## Project Structure
-
-
+## Project Structure
 
 ```text
-
 presales-agent/
-
 │
-
-├── thinksystem\_agent.py        # Core agent loop, RAG retrieval logic, and action handler
-
-├── thinksystem\_portfolio.txt   # Structured enterprise hardware and licensing knowledge base
-
-├── test\_agent.py               # Initial prototype for single-turn JSON schema validation
-
-├── loop\_agent.py               # Base interactive multi-turn intake script
-
+├── app.py                      # Streamlit web chat interface and runtime
+├── thinksystem_agent.py        # Core CLI agent loop, RAG retrieval logic, and action handler
+├── thinksystem_portfolio.txt   # Enterprise hardware and licensing knowledge base
+├── topics_list.txt             # Approved backend product taxonomy reference
+├── tickets.json                # Local JSON store simulating CRM submissions
+├── .gitignore                  # Excludes virtual environments and sensitive keys
 └── README.md                   # Project documentation
-
 ```
 
+---
 
+## Getting Started
 
-\---
+### 1. Prerequisites
+- Python installed on your machine
+- A valid Gemini API key from Google AI Studio
 
-
-
-\## Getting Started
-
-
-
-\### 1. Prerequisites
-
-\- Python installed on your machine
-
-\- A valid Gemini API key from Google AI Studio
-
-
-
-\### 2. Environment Setup
-
-Clone or navigate to the repository folder:
-
+### 2. Environment Setup
+Navigate to your project folder in CMD:
 ```cmd
-
 cd presales-agent
-
 ```
-
-
 
 Set your API key in your terminal session:
-
 ```cmd
-
-set GEMINI\_API\_KEY=your\_api\_key\_here
-
+set GEMINI_API_KEY=your_api_key_here
 ```
 
-
-
-Install the required library:
-
+Install the required libraries:
 ```cmd
-
-pip install google-genai
-
+pip install google-genai streamlit
 ```
 
-
-
-\### 3. Running the Agent
-
-Execute the agent script:
-
+### 3. Running the Web App
+Launch the Streamlit web interface:
 ```cmd
-
-python thinksystem\_agent.py
-
+python -m streamlit run app.py
 ```
+*(This will automatically open the interactive chat app in your default browser).*
 
+---
 
+## Future Enhancements (Roadmap)
 
-\---
-
-
-
-\## Example Interaction Transcript
-
-
-
-```text
-
-You: hello
-
-Agent: Hello! I am your Lenovo ThinkSystem presales RAG agent. How can I help you with hardware or licensing today?
-
-
-
-You: which server is best for enterprise AI workload?
-
-Agent: The ThinkSystem SR650 V3 supports multiple GPUs, making it ideal for mid-size AI inference. Additionally, the ThinkSystem SR650 V4 is built for AI-ready infrastructure with upgraded PCIe Gen5 and Neptune cooling options.
-
-
-
-You: need help with logging a ticket for a partner urgent quote.
-
-Agent: I can help you log a ticket. What is the urgency level for this quote?
-
-
-
-You: this is need before close of business today
-
-Agent: Thank you. How many hosts are required?
-
-
-
-You: need 4 hosts
-
-Agent: Got it, 4 hosts. Finally, how many cores per CPU are needed?
-
-
-
-You: 32c per cpu
-
-Agent: Thank you. Your ticket has been logged with urgency set to 'before close of business today', 4 hosts, and 32 cores per CPU.
-
-
-
-Sending to CRM -> {'urgency': 'before close of business today', 'hosts': 4, 'cores\_per\_cpu': 32}
-
-```
-
-
-
-\---
-
-
-
-\## Future Enhancements (Roadmap)
-
-
-
-\- \[ ] \*\*Semantic Vector Embeddings:\*\* Replace keyword matching with vector embeddings (using `gemini-embedding-001` or ChromaDB) for semantic retrieval.
-
-\- \[ ] \*\*Native Function Calling:\*\* Migrate from JSON prompting to native Gemini Tool / Function Calling definitions.
-
-\- \[ ] \*\*Direct API Integration:\*\* Connect the output hook directly to Microsoft Dynamics 365 Web API or local SQLite/MySQL database storage.
-
-\- \[ ] \*\*Web Interface:\*\* Wrap the CLI script in a lightweight Streamlit or web UI for interactive demonstrations.
-
+- [ ] **Semantic Vector Embeddings:** Replace keyword matching with vector embeddings (using `gemini-embedding-001` or ChromaDB) for semantic retrieval.
+- [ ] **Native Function Calling:** Migrate from JSON prompting to native Gemini Tool / Function Calling definitions.
+- [ ] **Direct API Integration:** Connect the output hook directly to the Microsoft Dynamics 365 Web API.
