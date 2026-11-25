@@ -22,5 +22,29 @@
     "opportunity_id": null,
     "priority": "Low",
     "customer_name": "Coca-Cola"
+  },
+  {
+    "title": "Datacenter Hardware Refresh for Coca Cola",
+    "description": "Customer Coca Cola in Ireland requires a full datacenter refresh including 1U, 2U, GPU workloads, storage, and backup nodes.",
+    "requester_name": "Aaron Bolez",
+    "requester_email": "abolez@lenovo.com",
+    "country": "Ireland",
+    "topic": "Servers",
+    "subtopic": "Hardware",
+    "opportunity_id": null,
+    "priority": "Low",
+    "customer_name": "Coca Cola"
+  },
+  {
+    "title": "Hardware Refresh for Coca Cola - 50 Servers",
+    "description": "Customer Coca Cola requires a hardware refresh involving 50 servers to replace, consisting primarily of 1U/2U nodes along with some GPU and storage nodes.",
+    "requester_name": "Aaron Flarb",
+    "requester_email": "aflarb@lenovo.com",
+    "country": "Ireland",
+    "topic": "Servers",
+    "subtopic": "Hardware Refresh",
+    "opportunity_id": null,
+    "priority": "Low",
+    "customer_name": "Coca Cola"
   }
 ]
